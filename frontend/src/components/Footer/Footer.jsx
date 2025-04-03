@@ -62,7 +62,8 @@ const Footer = () => {
                   </Link>
                 </span> */}
                 <span>
-                  <Link to="https://instagram.com">
+                <Link to="#" onClick={() => window.open("https://www.instagram.com/deepak_gangwr/", "_blank", "noopener,noreferrer")}>
+                
                     <i className="ri-instagram-line"></i>
                   </Link>
                 </span>
@@ -146,7 +147,10 @@ const Footer = () => {
             <p className="copyright">
               &copy; {year} Travel World. All Rights Reserved.
               Designed and Developed By{" "}
-              <Link to="https://shuence.netlify.app">Deepak gangwar</Link>
+              <Link to="#" onClick={() => window.open("https://deepak-gangwar.netlify.app/", "_blank", "noopener,noreferrer")}>
+  Deepak Gangwar
+</Link>
+
             </p>
           </Col>
         </Row>

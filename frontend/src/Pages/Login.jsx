@@ -6,28 +6,7 @@ import loginImg from "../assets/images/login.png";
 import userIcon from "../assets/images/user.png";
 
 const Login = () => {
-  const [showPassword, setShowPassword] = useState(false); // State to toggle password visibility
-
-  // const [credentials, setCredentials] = useState({
-  //   email: "",
-  //   password: "",
-  // });
-
-  // const [error, setError] = useState(null);
-  // const [success, setSuccess] = useState(null);
-
-  // const handleChange = (e) => {
-  //   const { id, value } = e.target;
-  //   setCredentials((prevCredentials) => ({
-  //     ...prevCredentials,
-  //     [id]: value,
-  //   }));
-  // };
-
-  // const handleClick = async (e) => {
-  //   e.preventDefault();
-  //   // Handle login logic here
-  // };
+  const [showPassword, setShowPassword] = useState(false);
 
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);
@@ -48,9 +27,7 @@ const Login = () => {
                   <img src={userIcon} alt="" />
                 </div>
                 <h2>Login</h2>
-                {/* Remove error and success messages */}
-                {/* {error && <div className="alert alert-danger">{error}</div>} */}
-                {/* {success && <div className="alert alert-success">{success}</div>} */}
+
                 <Form>
                   <FormGroup>
                     <input
@@ -59,7 +36,6 @@ const Login = () => {
                       required
                       autoComplete="true"
                       id="email"
-                      // onChange={handleChange}
                     />
                   </FormGroup>
                   <FormGroup>
@@ -70,22 +46,23 @@ const Login = () => {
                         required
                         autoComplete="true"
                         id="password"
-                        // onChange={handleChange}
                       />
                       <i
-                        className={`ri-eye-line${showPassword ? "-slash" : ""}`}
+                        className={`ri-eye${showPassword ? "-off" : ""}-line`}
                         onClick={togglePasswordVisibility}
                       ></i>
                     </div>
                   </FormGroup>
-                  <Button
-                    className="btn secondary__btn auth__btn"
-                    type="submit"
-                    // onClick={handleClick}
-                  >
+                  <Button className="btn secondary__btn auth__btn" type="submit">
                     Login
                   </Button>
                 </Form>
+
+                {/* Added Forgot Password here */}
+                <p>
+                  <Link to="/forgotpassword">Forgot Password?</Link>
+                </p>
+
                 <p>
                   Don't have an account? <Link to="/register">Register</Link>
                 </p>

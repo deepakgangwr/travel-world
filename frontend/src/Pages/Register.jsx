@@ -27,7 +27,6 @@ const Register = () => {
 
   const handleClick = (e) => {
     e.preventDefault();
-    // Simulate a successful registration
     setSuccess("Registration successful!");
   };
 
@@ -95,22 +94,16 @@ const Register = () => {
                         onChange={handleChange}
                       />
                       <i
-                        className={`ri-eye-line${showPassword ? "-slash" : ""}`}
+                        className={`ri-eye${showPassword ? "-off" : ""}-line`}
                         onClick={togglePasswordVisibility}
                       ></i>
                     </div>
                   </FormGroup>
-                  <Button
-                    className="btn secondary__btn auth__btn"
-                    type="submit"
-                    onClick={handleClick}
-                  >
+                  <Button className="btn secondary__btn auth__btn" type="submit">
                     Create Account
                   </Button>
                 </Form>
-                <p>
-                  <Link to="/forgotpassword">Forgot Password?</Link>
-                </p>
+
                 <p>
                   Already have an account? <Link to="/login">Login</Link>
                 </p>
