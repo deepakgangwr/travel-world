@@ -1,6 +1,6 @@
 .search__bar{
-    padding: 0.3rem 1rem;
-    border-radius: 500px;
+    padding: 0.5rem 1rem;
+    border-radius: 50px;
     box-shadow: rgba( 17, 12, 46, 0.15) 0px 48px 100px 0px;
     width: max-content;
     margin-top: 50px;
@@ -23,7 +23,7 @@
 }
 
 .form__group h6{
-    margin-bottom:0;
+    margin-bottom: 0;
 }
 
 .form__group-fast{
@@ -32,7 +32,7 @@
 
 .search__icon i{
     font-size: 1.6rem;
-    padding: 0.4rem;
+    padding: 0.5rem;
     color: #fff;
     background: var(--secondary-color);
     border-radius: 10px 5px 10px 5px;

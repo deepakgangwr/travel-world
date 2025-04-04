@@ -1,9 +1,11 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { Container, Row, Col, Form, FormGroup, Button } from "reactstrap";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import "../styles/Login.css";
 import registerImg from "../assets/images/register.png";
 import userIcon from "../assets/images/user.png";
+import { AuthContext } from "../context/AuthContext";
+import { BASE_URL } from "../utils/config";
 
 const Register = () => {
   const [credentials, setCredentials] = useState({
@@ -17,17 +19,15 @@ const Register = () => {
   const [isEmailValid, setIsEmailValid] = useState(true);
   const [showPassword, setShowPassword] = useState(false);
 
+  const { dispatch } = useContext(AuthContext);
+  const navigate = useNavigate();
+
   const handleChange = (e) => {
     const { id, value } = e.target;
-    setCredentials((prevCredentials) => ({
-      ...prevCredentials,
+    setCredentials((prev) => ({
+      ...prev,
       [id]: value,
     }));
-  };
-
-  const handleClick = (e) => {
-    e.preventDefault();
-    setSuccess("Registration successful!");
   };
 
   const validateEmail = (email) => {
@@ -43,6 +43,44 @@ const Register = () => {
 
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);
+  };
+
+  const handleClick = async (e) => {
+    e.preventDefault();
+
+    setError(null);
+    setSuccess(null);
+    setIsEmailValid(true);
+
+    console.log("Sending Request to:", `${BASE_URL}/auth/register`);
+    console.log("Data:", credentials);
+
+    try {
+      const res = await fetch(`${BASE_URL}/auth/register`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        credentials: "include",
+        body: JSON.stringify(credentials),
+      });
+
+      const result = await res.json();
+
+      if (!res.ok) {
+        throw new Error(result.message || "Registration failed");
+      }
+
+      setSuccess("Registration successful!");
+      dispatch && dispatch({ type: "REGISTER_SUCCESS", payload: result });
+
+      setTimeout(() => {
+        navigate("/login");
+      }, 1000);
+    } catch (err) {
+      setError(err.message);
+      dispatch && dispatch({ type: "REGISTER_FAILURE", payload: err.message });
+    }
   };
 
   return (
@@ -81,7 +119,11 @@ const Register = () => {
                       id="email"
                       onChange={handleEmailChange}
                     />
-                    {!isEmailValid && <div className="alert alert-danger">Please enter a valid email address</div>}
+                    {!isEmailValid && (
+                      <div className="alert alert-danger">
+                        Please enter a valid email address
+                      </div>
+                    )}
                   </FormGroup>
                   <FormGroup>
                     <div className="password__input">
@@ -94,7 +136,7 @@ const Register = () => {
                         onChange={handleChange}
                       />
                       <i
-                        className={`ri-eye${showPassword ? "-off" : ""}-line`}
+                        className={`ri-eye-line${showPassword ? "-slash" : ""}`}
                         onClick={togglePasswordVisibility}
                       ></i>
                     </div>
@@ -103,7 +145,9 @@ const Register = () => {
                     Create Account
                   </Button>
                 </Form>
-
+                <p>
+                  <Link to="/forgotpassword">Forgot Password?</Link>
+                </p>
                 <p>
                   Already have an account? <Link to="/login">Login</Link>
                 </p>

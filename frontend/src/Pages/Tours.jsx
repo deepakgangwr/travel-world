@@ -1,20 +1,31 @@
-import React, { useState, useEffect } from "react";
-import CommonSection from "../shared/CommonSection";
+import React from "react";
+import CommonSection from "../Shared/CommonSection";
 import "../styles/Tour.css";
-import tourData from "../assets/data/tours";
-import TourCard from "./../shared/TourCard";
-import SearchBar from "../shared/SearchBar";
-import Newsletter from "../shared/Newsletter";
+import useFetch from "../hooks/useFetch"; // Ensure useFetch is correctly imported
+import TourCard from "../Shared/TourCard";
+import SearchBar from "../Shared/SearchBar";
+import Newsletter from "../Shared/Newsletter";
 import { Container, Row, Col } from "reactstrap";
 
 const Tours = () => {
-  const [pageCount, setPageCount] = useState(0);
-  const [page, setPage] = useState(0);
+  const { data: tours, loading, error } = useFetch("tours");
 
-  useEffect(() => {
-    const pages = Math.ceil(5 / 4);
-    setPageCount(pages);
-  }, [page]);
+  if (loading) {
+    return (
+      <div className="loader-container">
+        <div className="loader" />
+        <div className="loading-text">Loading...</div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="error__msg">
+        Error loading tours. Check your network connection.
+      </div>
+    );
+  }
 
   return (
     <div>
@@ -29,22 +40,15 @@ const Tours = () => {
       <section className="pt-0">
         <Container>
           <Row>
-            {tourData?.map((tour) => (
-              <Col lg="3" md="6" sm="6" className="mb-4" key={tour.id}>
-                <TourCard tour={tour} />
-              </Col>
-            ))}
-            <Col lg="12">
-              <div className="pagination d-flex  mt-4 gap-4 justify-content-center">
-                {[...Array(pageCount).keys()].map((number) => (
-                  <span key={number} onClick={() => setPage(number)}
-                  className={page=== number ? "active__page" :" "} 
-                  >
-                    {number + 1}
-                  </span>
-                ))}
-              </div>
-            </Col>
+            {Array.isArray(tours) && tours.length > 0 ? (
+              tours.map((tour) => (
+                <Col lg="3" md="6" sm="6" className="mb-4" key={tour._id}>
+                  <TourCard tour={tour} />
+                </Col>
+              ))
+            ) : (
+              <div className="no-tours">No tours available</div>
+            )}
           </Row>
         </Container>
       </section>

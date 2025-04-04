@@ -20,16 +20,10 @@
   font-size: 1.1rem;
 }
 
-/* This will color all the non-active links orange */
-.nav__item a:not(.active__link) {
-  color: orange;
-}
-
 .nav__item a:hover {
   color: inherit;
 }
 
-/* Active link color set to black */
 .nav__item a.active__link {
   color: var(--secondary-color);
 }
@@ -62,7 +56,6 @@
     font-size: 1rem;
   }
 }
-
 @media only screen and (max-width: 992px) {
   .logo img {
     width: 40%;
@@ -74,6 +67,7 @@
     position: fixed;
     top: 0;
     left: 0;
+
     z-index: 999;
     display: none;
   }
@@ -160,20 +154,13 @@
     right: 25px;
   }
 
- 
+  .show__menu {
+    display: block;
+  }
 
   .mobile__menu {
-    font-size: 1.3rem;
-    color: black;
-    display: none;
+    display: block;
   }
-  
-  .mobile__menu i {
-    font-size: 1.3rem;
-    color: var(--heading-color);
-    cursor: pointer;
-  }
-  
 
   /* Fix sticky header for extra small devices */
   .sticky__header {
@@ -208,4 +195,3 @@
     transform: translateX(0);
   }
 }
-

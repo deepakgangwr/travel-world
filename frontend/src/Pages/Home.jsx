@@ -5,15 +5,15 @@ import { Container, Row, Col } from 'reactstrap';
 import heroImg from "../assets/images/hero-img01.jpg";
 import heroImg2 from "../assets/images/hero-img02.jpg";
 import heroVideo from "../assets/images/hero-video.mp4";
-import Subtitle from '../shared/Subtitle';
+import Subtitle from '../Shared/Subtitle';
 import worldImg from "../assets/images/world.png";
 import experienceImage from "../assets/images/experience.png";
-import SearchBar from '../shared/SearchBar';
+import SearchBar from '../Shared/SearchBar';
 import ServiceList from '../services/ServiceList';
 import FeaturedToursList from '../components/FeaturedTours/FeaturedToursList';
 import MasonryImagesGallery from '../components/Image-gallery/MasonryImagesGallery';
 import Testimonials from '../components/Testimonials/Testimonials';
-import Newsletter from '../shared/Newsletter';
+import Newsletter from '../Shared/Newsletter';
 
 const Home = () => {
   return (

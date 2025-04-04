@@ -18,18 +18,18 @@ const TourCard = ({ tour }) => {
   };
 
   useEffect(() => {
-    window.scrollTo(0, 0);
+    window.scrollTo(0, 0); 
   }, []);
 
   return (
     <div className="tour__card">
       <Card>
         <div className="tour__img">
-          <Link to={`/tourDetails}`}>
-            <div onClick={handleScrollToTop}>
+        <Link to={`/tours/${_id}`}>
+              <div onClick={handleScrollToTop}>
               <img src={photo} alt="tour" />
-            </div>
-          </Link>
+              </div>
+            </Link>
           <span>Featured</span>
         </div>
         <CardBody>
@@ -52,7 +52,6 @@ const TourCard = ({ tour }) => {
             <Link to={`/tours/${_id}`}>
               <div onClick={handleScrollToTop}>{title}</div>
             </Link>
-
           </h5>
           <div className="card__bottom d-flex align-items-center justify-content-between mt-3">
             <h5>
