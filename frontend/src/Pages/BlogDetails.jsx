@@ -1,15 +1,15 @@
+// src/Pages/BlogDetails.jsx
 import React, { useContext, useEffect, useRef, useState } from "react";
 import { Container, Row, Col, Form, ListGroup, Alert } from "reactstrap";
 import avtar from "../assets/images/avatar.jpg";
 import "../styles/Blogdetails.css";
-import useFetch from "../hooks/useFetch";
-import { useParams } from "react-router-dom";
-import FeaturedBlogsList from "../components/FeaturedBlogs.jsx/FeaturedBlogsList";
-import Subtitle from "../Shared/Subtitle";
-import Newsletter from "../Shared/Newsletter";
+import { useParams, Link } from "react-router-dom";
 import axios from "axios";
 import { BASE_URL } from "../utils/config";
 import { AuthContext } from "../context/AuthContext";
+import Newsletter from "../Shared/Newsletter";
+import FeaturedBlogsList from "../components/FeaturedBlogs.jsx/FeaturedBlogsList";
+import Subtitle from "../Shared/Subtitle";
 
 const BlogDetails = () => {
   const { id } = useParams();
@@ -37,20 +37,6 @@ const BlogDetails = () => {
     fetchBlog();
   }, [id]);
 
-  const {
-    data: fetchedComments,
-    loading: loadingComments,
-    error: errorComments,
-  } = useFetch(`comment/${id}/`);
-
-  useEffect(() => {
-    if (fetchedComments) {
-      setComments(fetchedComments);
-    }
-  }, [fetchedComments]);
-
-  const options = { day: "numeric", month: "long", year: "numeric" };
-
   const submitHandler = async (e) => {
     e.preventDefault();
 
@@ -62,14 +48,10 @@ const BlogDetails = () => {
     const commentMsg = commentMsgRef.current.value;
     const username = user.username;
 
-    const commentData = {
-      comment: commentMsg,
-      username: username,
-    };
+    const commentData = { comment: commentMsg, username };
 
     try {
       const response = await axios.post(`${BASE_URL}/comment/${id}`, commentData);
-
       setComments([...comments, response.data]);
       commentMsgRef.current.value = "";
       setCommentStatus("success");
@@ -81,7 +63,7 @@ const BlogDetails = () => {
     }
   };
 
-  if (loading || loadingComments) {
+  if (loading) {
     return (
       <div className="loader-container">
         <div className="loader" />
@@ -90,11 +72,16 @@ const BlogDetails = () => {
     );
   }
 
-  if (error || !blog || errorComments) {
-    return <div className="error__msg">Error loading blog details. Check your network</div>;
+  if (error || !blog) {
+    return (
+      <div className="error__msg">
+        Error loading blog details. Check your network
+      </div>
+    );
   }
 
   const { title, author, createdAt, photo, content } = blog;
+  const options = { day: "numeric", month: "long", year: "numeric" };
 
   return (
     <>
@@ -105,13 +92,10 @@ const BlogDetails = () => {
               <div className="blog__content">
                 <div className="blog__info">
                   <h2>{title}</h2>
-
                   <div className="d-flex align-items-center gap-5">
                     <span className="blog__rating d-flex align-items-center gap-1">
-                      <span>
-                        <i className="ri-user-line"></i>
-                        {author}
-                      </span>
+                      <i className="ri-user-line"></i>
+                      {author}
                     </span>
                   </div>
                   <div className="blog__extra-details">
@@ -131,25 +115,20 @@ const BlogDetails = () => {
                 </div>
 
                 <div className="blog__reviews mt-4">
-                  <h4>Comment </h4>
+                  <h4>Comment</h4>
                   {commentStatus === "success" && (
                     <Alert color="success" toggle={() => setCommentStatus(null)}>
                       Comment successfully.
                     </Alert>
                   )}
                   {commentStatus === "error" && (
-                    <Alert
-                      color="danger"
-                      className=""
-                      toggle={() => setCommentStatus(null)}
-                    >
+                    <Alert color="danger" toggle={() => setCommentStatus(null)}>
                       Failed to add comment. Please try again.
                     </Alert>
                   )}
                   {isLoginAlertVisible && (
                     <Alert
                       color="warning"
-                      className=""
                       toggle={() => setIsLoginAlertVisible(false)}
                     >
                       Please login to add comment.
@@ -172,7 +151,6 @@ const BlogDetails = () => {
                     {comments?.map((comment, index) => (
                       <div className="review__item" key={index}>
                         <img src={avtar} alt="" />
-
                         <div className="w-100">
                           <div className="d-flex align-items-center justify-content-between">
                             <div>
