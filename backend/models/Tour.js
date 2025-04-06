@@ -35,11 +35,17 @@ const tourSchema = new mongoose.Schema(
       type: Number,
       required: true,
     },
-
     reviews: [
       {
-        type: mongoose.Types.ObjectId,
-        ref: "Review",
+        username: {
+          type: String,
+        },
+        rating: {
+          type: Number,
+        },
+        reviewText: {
+          type: String,
+        },
       },
     ],
 

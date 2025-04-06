@@ -90,10 +90,10 @@ export const deleteUser = async (req, res) => {
   }
 };
 
-// export default {
-//   createUser,
-//   getAllUsers,
-//   getUserById,
-//   updateUser,
-//   deleteUser,
-// };
+export default {
+  createUser,
+  getAllUsers,
+  getUserById,
+  updateUser,
+  deleteUser,
+};
