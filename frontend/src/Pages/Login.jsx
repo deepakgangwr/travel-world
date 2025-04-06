@@ -15,15 +15,15 @@ const Login = () => {
 
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(null);
-  const [showPassword, setShowPassword] = useState(false); // State to toggle password visibility
+  const [showPassword, setShowPassword] = useState(false);
 
   const { dispatch } = useContext(AuthContext);
   const navigate = useNavigate();
 
   const handleChange = (e) => {
     const { id, value } = e.target;
-    setCredentials((prevCredentials) => ({
-      ...prevCredentials,
+    setCredentials((prev) => ({
+      ...prev,
       [id]: value,
     }));
   };
@@ -32,7 +32,7 @@ const Login = () => {
     e.preventDefault();
 
     dispatch({ type: "LOGIN_START" });
-    setError(null); // Reset the error on each login attempt
+    setError(null);
     try {
       const res = await fetch(`${BASE_URL}/auth/login`, {
         method: "POST",
@@ -50,7 +50,7 @@ const Login = () => {
         dispatch({ type: "LOGIN_FAILURE", payload: result.message });
       } else {
         dispatch({ type: "LOGIN_SUCCESS", payload: result });
-        setSuccess("Login successful!"); // Set the success message
+        setSuccess("Login successful!");
         setTimeout(() => {
           navigate("/");
         }, 1000);
@@ -104,11 +104,14 @@ const Login = () => {
                         onChange={handleChange}
                       />
                       <i
-                        className={`ri-eye-line${showPassword ? "-slash" : ""}`}
+                        className={`ri-${showPassword ? "eye-off-line" : "eye-line"}`}
                         onClick={togglePasswordVisibility}
                       ></i>
                     </div>
                   </FormGroup>
+                  <p>
+                    <Link to="/forgotpassword">Forgot Password?</Link>
+                  </p>
                   <Button
                     className="btn secondary__btn auth__btn"
                     type="submit"

@@ -52,9 +52,6 @@ const Register = () => {
     setSuccess(null);
     setIsEmailValid(true);
 
-    console.log("Sending Request to:", `${BASE_URL}/auth/register`);
-    console.log("Data:", credentials);
-
     try {
       const res = await fetch(`${BASE_URL}/auth/register`, {
         method: "POST",
@@ -136,7 +133,7 @@ const Register = () => {
                         onChange={handleChange}
                       />
                       <i
-                        className={`ri-eye-line${showPassword ? "-slash" : ""}`}
+                        className={`ri-${showPassword ? "eye-off-line" : "eye-line"}`}
                         onClick={togglePasswordVisibility}
                       ></i>
                     </div>
@@ -145,9 +142,6 @@ const Register = () => {
                     Create Account
                   </Button>
                 </Form>
-                <p>
-                  <Link to="/forgotpassword">Forgot Password?</Link>
-                </p>
                 <p>
                   Already have an account? <Link to="/login">Login</Link>
                 </p>
