@@ -1,12 +1,14 @@
-import React from "react";
-import { Button, Col, NavLink } from "reactstrap";
+import React, { useState } from "react";
+import { Button, Col } from "reactstrap";
 import useFetch from "../../hooks/useFetch";
 import BlogCard from "../../Shared/BlogCard";
 import "../../Shared/Blogcard.css";
 
-const FeaturedBlogsList = ({ lg,sm,md }) => {
+
+const FeaturedBlogsList = ({ lg, sm, md }) => {
   const { data: featuredBlogs, loading } = useFetch(`blogs/featured`);
-  
+  const [page, setPage] = useState(1);
+
   if (loading) {
     return (
       <div className="loader-container">
@@ -16,19 +18,32 @@ const FeaturedBlogsList = ({ lg,sm,md }) => {
     );
   }
 
+  const blogsPerPage = 3;
+  const startIndex = (page - 1) * blogsPerPage;
+  const currentBlogs = Array.isArray(featuredBlogs)
+    ? featuredBlogs.slice(startIndex, startIndex + blogsPerPage)
+    : [];
+
+  const totalPages = Math.ceil((featuredBlogs?.length || 0) / blogsPerPage);
+
   return (
     <>
-      {Array.isArray(featuredBlogs) &&
-        featuredBlogs.map((blog) => (
-          <Col lg={lg} md={md} sm={sm} className="mb-4" key={blog._id}>
-            <BlogCard blog={blog} />
-          </Col>
+      {currentBlogs.map((blog) => (
+        <Col lg={lg} md={md} sm={sm} className="" key={blog._id}>
+          <BlogCard blog={blog} />
+        </Col>
+      ))}
+      <div className="viall__btn d-flex gap-2 mt-3">
+        {Array.from({ length: totalPages }, (_, i) => (
+          <Button
+            key={i}
+            className={`btn1 ${page === i + 1 ? "active" : ""}`}
+            onClick={() => setPage(i + 1)}
+          >
+            {i + 1}
+          </Button>
         ))}
-        <div className="viall__btn">
-          <NavLink to={"/blogs"}>
-            <Button className="btn primary__btn">View All Blogs</Button>
-          </NavLink>
-        </div>
+      </div>
     </>
   );
 };

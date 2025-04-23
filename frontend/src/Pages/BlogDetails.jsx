@@ -27,6 +27,7 @@ const BlogDetails = () => {
       try {
         const response = await axios.get(`${BASE_URL}/blogs/${id}`);
         setBlog(response.data);
+        setComments(response.data.comments);
         setLoading(false);
       } catch (error) {
         setError("Error loading blog details.");
@@ -51,17 +52,34 @@ const BlogDetails = () => {
     const commentData = { comment: commentMsg, username };
 
     try {
-      const response = await axios.post(`${BASE_URL}/comment/${id}`, commentData);
-      setComments([...comments, response.data]);
+      const response = await fetch(`${BASE_URL}/comment/${id}`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': user.token // include token if required
+        },
+        body: JSON.stringify(commentData),
+        credentials: 'include' // ensures cookies/session tokens are sent
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to post comment');
+      }
+
+      const data = await response.json();
+      setComments([...comments, data]);
       commentMsgRef.current.value = "";
       setCommentStatus("success");
+
       setTimeout(() => {
         window.location.reload();
       }, 800);
     } catch (error) {
+      console.error(error);
       setCommentStatus("error");
     }
   };
+
 
   if (loading) {
     return (
@@ -80,7 +98,7 @@ const BlogDetails = () => {
     );
   }
 
-  const { title, author, createdAt, photo, content } = blog;
+  const { title, author, createdAt, image, description } = blog;
   const options = { day: "numeric", month: "long", year: "numeric" };
 
   return (
@@ -110,8 +128,8 @@ const BlogDetails = () => {
                     </span>
                   </div>
                   <h5>Blog Content</h5>
-                  <p>{content}</p>
-                  <img src={photo} alt="" />
+                  <p>{description}</p>
+                  <img src={image} alt="" />
                 </div>
 
                 <div className="blog__reviews mt-4">

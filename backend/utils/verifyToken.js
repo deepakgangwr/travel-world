@@ -6,19 +6,19 @@ const errorHandler = (res, statusCode, message) => {
 };
 
 const verifyToken = async (req, res, next) => {
-  const token = req.headers.authorization;
+  const authHeader = req.headers.authorization;
+  const token = authHeader;
 
   if (!token) {
     return errorHandler(res, 401, 'No token provided');
   }
 
+  
   try {
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
-    const userId = decoded._id; // Use _id as userId
+    const userId = decoded.userId;
 
-    // Fetch the user from the database using the userId (_id)
     const user = await User.findById(userId);
-
     if (!user) {
       return errorHandler(res, 401, 'Invalid token');
     }
@@ -30,6 +30,7 @@ const verifyToken = async (req, res, next) => {
     return errorHandler(res, 401, 'Invalid token');
   }
 };
+
 
 export const verifyUser = (req, res, next) => {
   if (req.user && req.user.role === 'user') {

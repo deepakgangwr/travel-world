@@ -3,43 +3,38 @@ import { Card, CardBody } from "reactstrap";
 import { Link } from "react-router-dom";
 import "./Blogcard.css";
 
-const BlogCard = ({ blog}) => {
-  const { _id, title, author, date, photo, comments } = blog;
+const BlogCard = ({ blog }) => {
+  const { _id, title, author, date, photo, comments, featured } = blog;
 
   return (
     <div className="blog__card">
-      <Card>
+      <Card className="blog__card__wrapper">
         <Link to={`/blogs/${_id}`}>
           <div className="blog__img">
-            <img src={photo} alt="blog" />
+            <img src={photo || blog.image} alt="blog" />
+            {featured && <span className="featured__label">Featured</span>}
           </div>
         </Link>
-        <CardBody>
-          <div className="card__top d-flex align-items-center justify-content-between">
-            <span className="blog__location d-flex align-items-center gap-1">
+        <CardBody className="blog__card__body">
+          <div className="blog__meta d-flex justify-content-between align-items-center">
+            <div className="blog__author d-flex align-items-center">
               <i className="ri-user-line"></i>
-              {author}
-            </span>
-            <span className="blog__rating d-flex align-items-center gap-1">
-              <span>{date}</span>
-            </span>
+              <span>{author}</span>
+            </div>
+            <div className="blog__date">
+              <span>{new Date(date).toLocaleDateString()}</span>
+            </div>
           </div>
-
           <h5 className="blog__title">
-          <Link to={`/blogs/${_id}`}>
-              <div>{title}</div>
-          </Link>
+            <Link to={`/blogs/${_id}`}>{title}</Link>
           </h5>
-
-          <div className="card__bottom d-flex align-items-center justify-content-between mt-3">
-            <h5>
-              {comments.length} <span>Comments</span>
-            </h5>
-            <button className="btn booking__btn">
-            <Link to={`/blogs/${_id}`}>
-                <div>Read More</div>
-                </Link>
-            </button>
+          <div className="blog__footer d-flex justify-content-between align-items-center mt-3">
+            <div className="blog__comments">
+              <span>{comments ? comments.length : 0} Comments</span>
+            </div>
+            <Link to={`/blogs/${_id}`} className="btn readmore__btn">
+              Read More
+            </Link>
           </div>
         </CardBody>
       </Card>

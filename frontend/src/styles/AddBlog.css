@@ -1,0 +1,59 @@
+.add-blog-container {
+    max-width: 600px;
+    margin: 40px auto;
+    padding: 30px;
+    background-color: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+  }
+  
+  .add-blog-container h2 {
+    text-align: center;
+    margin-bottom: 24px;
+    font-size: 28px;
+    color: #333;
+    font-weight: 600;
+  }
+  
+  .add-blog-form {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .add-blog-form input,
+  .add-blog-form textarea {
+    padding: 12px 16px;
+    margin-bottom: 18px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    font-size: 16px;
+    resize: none;
+    transition: border-color 0.3s ease;
+  }
+  
+  .add-blog-form input:focus,
+  .add-blog-form textarea:focus {
+    border-color: #0d6efd;
+    outline: none;
+  }
+  
+  .add-blog-form textarea {
+    min-height: 150px;
+  }
+  
+  .add-blog-form button {
+    padding: 12px;
+    background-color: #0d6efd;
+    color: white;
+    font-size: 16px;
+    font-weight: 500;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .add-blog-form button:hover {
+    background-color: #084cd2;
+  }
+  

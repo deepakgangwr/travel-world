@@ -1,117 +1,128 @@
-.title{
-    font-size: 2.3rem;
-    margin-bottom: 2.5rem;
-    margin-top: 1rem;
+.blog__card {
+    margin-bottom: 2rem;
 }
 
-.blog__img img{
-    width: 100%;
+.blog__card__wrapper {
+    border: none;
+    box-shadow: rgba(220, 178, 178, 0.2) 0px 18px 50px -10px;
+    transition: transform 0.3s;
+    border-radius: 5px;
+}
+
+.blog__card__wrapper:hover {
+    transform: translateY(-5px);
+}
+
+.blog__img {
+    position: relative;
+    overflow: hidden;
     border-radius: 5px 5px 0 0;
 }
 
-.card{
-    border:none !important;
-    box-shadow: rgba(220, 178, 178, 0.2) 0px 18px 50px -10px;
+.blog__img img {
+    width: 100%;
+    display: block;
+    transition: transform 0.3s ease;
 }
 
-.blog__img{
-    position: relative;
+.blog__img:hover img {
+    transform: scale(1.05);
 }
 
-.blog__img span{
+.featured__label {
     position: absolute;
-    bottom:0;
-    right: 0;
-    background: var(--primary-color);
+    bottom: 10px;
+    right: 10px;
+    background-color: var(--primary-color);
     color: #fff;
-    padding: 0.2rem 0.4rem;
-    height: max-content;
-    width: max-content;
-    border-radius: 3px 0 0 0;
-    z-index: 10;
+    padding: 0.3rem 0.6rem;
+    border-radius: 3px;
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    z-index: 1;
 }
 
-.card__top span i {
+.blog__card__body {
+    padding: 1.2rem;
+}
+
+.blog__meta {
+    font-size: 0.9rem;
+    color: var(--heading-color);
+}
+
+.blog__author i {
+    margin-right: 0.3rem;
+}
+
+.blog__title {
+    margin-top: 0.8rem;
+    font-size: 1.2rem;
+    font-weight: 600;
+}
+
+.blog__title a {
+    color: var(--heading-color);
+    text-decoration: none;
+}
+
+.blog__title a:hover {
     color: var(--secondary-color);
 }
 
-.blog__rating{
-    font-size: .8rem;
-    color: var(--text-color);
-}
-
-.blog__rating span{
-    color:var(--text-color)
-}
-
-.blog__location{
-    color: var(--heading-color);
-    font-weight: 500;
-    font-size: .9rem;
-}
-
-.blog__rating i:nth-child(1) {
-    font-size: 1rem;
-    color: var(--heading-color);
-}
-
-.blog__title{
+.blog__footer {
     margin-top: 1rem;
-    font-size: .8rem;
-    cursor: pointer;
 }
 
-.blog__title a{
-    text-decoration: none;
-    color: var(--heading-color);
-}
-
-.blog__title a:hover{
-    color: var(--secondary-color);
-}
-
-.card__bottom h5{
-    font-size: 1rem;
-    color: var(--secondary-color);
-    font-weight: 700;
-}
-
-.card__bottom h5 span{
-    font-size: .8rem;
-    color: var(--text-color);
-    font-weight: 500;
-}
-
-.booking__btn{
-    background: var(--secondary-color) !important;
-    cursor: pointer;
-    padding: 0.2rem .5rem !important;
-}
-
-.booking__btn a{
-    text-decoration: none;
+.readmore__btn {
+    background-color: var(--secondary-color);
     color: #fff;
-    font-size: .8rem;
+    padding: 0.5rem 1rem;
+    text-decoration: none;
+    border-radius: 3px;
+    font-size: 0.9rem;
+    transition: background-color 0.3s;
 }
 
-.booking__btn:hover{
+.readmore__btn:hover {
+    background-color: var(--primary-color);
+}
+.viall__btn .btn1 {
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    padding: 0;
+    font-size: 0.9rem;
+    font-weight: 600;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: transparent;
+    color: var(--secondary-color);
+    border: 2px solid var(--secondary-color);
+    transition: all 0.3s ease;
+  }
+  
+  .viall__btn .btn1:hover {
+    background-color: var(--primary-color);
     color: #fff;
-}
-
-@media only screen and (max-width: 576px) {
-    .blog__title{
-        font-size: .8rem;
-    }
-
-    .booking__btn a{
-        font-size: 0.8rem;
-    }
-
-    .booking__btn{
-        padding: 0.2 0.5rem !important;
-    }
-
-    .blog__location, .blog__rating{
-        font-size: .8rem;
-    }
-}
+    border-color: var(--primary-color);
+  }
+  
+  .viall__btn .btn1.active {
+    background-color: var(--primary-color) !important;
+    color: #fff;
+    border-color: var(--primary-color);
+  }
+  
+  .viall__btn {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 0.2rem; /* ↓ Reduced to bring buttons closer */
+    gap: 0.2rem;
+  }
+  .featured-blog-slider .slick-slide {
+    padding: 0 10px;
+  }

@@ -6,7 +6,7 @@ const blogSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-    content: {
+    description: {
       type: String,
       required: true,
     },
@@ -14,26 +14,20 @@ const blogSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-    photo: {
+    image: {
       type: String,
       required: true,
     },
     comments: [
       {
-        username: {
-          type: String,
-          required: true,
-        },
-        comment: {
-          type: String,
-          required: true,
-        },
+        type: mongoose.Types.ObjectId,
+        ref: "Comment",
       },
     ],
     featured: {
-        type: Boolean,
-        default: false,
-},
+      type: Boolean,
+      default: false,
+    },
   },
   { timestamps: { createdAt: 'createdAt' } }
 );

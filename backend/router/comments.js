@@ -4,10 +4,10 @@ import { createComment, deleteComment, getCommentsByBlogId} from '../controllers
 
 const commentRoute = express.Router();
 
-commentRoute.post('/:BlogId' ,createComment);
+commentRoute.post('/:BlogId' , verifyUser, createComment);
 
 commentRoute.get('/:BlogId', getCommentsByBlogId);
 
-commentRoute.get('/:commentId', verifyUser,deleteComment);
+commentRoute.get('/:commentId', verifyUser, deleteComment);
 
 export default commentRoute;

@@ -2,11 +2,8 @@ import Blog from "../models/Blog.js"
 
 export const createBlog = async (req, res) => {
     try {
-      console.log(req.body);
       const newBlog = await Blog.create(req.body);
-      console.log(newBlog); 
       const savedBlog = await newBlog.save();
-      console.log(savedBlog);
       res.status(201).json(newBlog);
     } catch (error) {
       console.error(error); 
@@ -28,7 +25,7 @@ export const updateBlog = async (req, res) => {
 
 export const getSingleBlog = async (req, res) => {
   try {
-    const blog = await Blog.findById(req.params.id);
+    const blog = await Blog.findById(req.params.id).populate("comments");
     if (blog) {
       res.status(200).json(blog);
     } else {
@@ -42,7 +39,7 @@ export const getSingleBlog = async (req, res) => {
 
 export const getAllBlogs = async ( req,res) => {
   try {
-    const blogs = await Blog.find();
+    const blogs = await Blog.find().populate("comments");
     res.status(200).json(blogs);
   } catch (error) {
     res.status(500).json({ error: 'Failed to fetch blogs' });
@@ -51,7 +48,7 @@ export const getAllBlogs = async ( req,res) => {
 
 export const getFeaturedBlogs = async (req, res) => {
   try {
-    const featuredBlogs = await Blog.find({ featured: true });
+    const featuredBlogs = await Blog.find({ featured: true }).populate("comments");
     if (featuredBlogs.length > 0) {
       res.status(200).json({
         success: true,

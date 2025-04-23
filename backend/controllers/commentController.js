@@ -4,8 +4,9 @@ import Blog from "../models/Blog.js";
 export const createComment = async (req, res) => {
   const { username, comment } = req.body;
   const { BlogId } = req.params;
-  const userId = req.userId; 
-  
+
+  const userId = req.user._id; // ✅ correct way to access userId now
+
   if (!username || !comment) {
     return res.status(400).json({ message: "Username and Comment are required fields" });
   }
@@ -16,27 +17,24 @@ export const createComment = async (req, res) => {
       return res.status(404).json({ message: "Blog not found" });
     }
 
-    // Create a new Comment
     const newComment = new Comment({
       blog: blog._id,
+      user: userId,
       username: username,
       comment: comment,
     });
 
-    // Save the new Comment
     await newComment.save();
-
-    blog.comments.push(newComment);
-
+    blog.comments.push(newComment._id);
     await blog.save();
 
     res.status(201).json({ message: "Comment created successfully" });
-
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Failed to create Comment" });
   }
 };
+
 
 // Get all comments for a specific blog
 export const getCommentsByBlogId = async (req, res) => {

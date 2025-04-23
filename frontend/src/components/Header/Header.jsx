@@ -96,7 +96,7 @@ const Header = () => {
                       {user.username.charAt(0).toUpperCase() +
                         user.username.slice(1)}
                     </h5>
-                    <Button className="btn btn-dark" onClick={logout}>
+                    <Button className="btn primary__btn" onClick={logout}>
                       Logout
                     </Button>
                   </>
