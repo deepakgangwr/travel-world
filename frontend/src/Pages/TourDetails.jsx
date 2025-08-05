@@ -137,10 +137,10 @@ const TourDetails = () => {
                       <i className="ri-map-pin-2-line"></i>
                       {city}
                     </span>
-                    <span>
-                      <i className="ri-money-dollar-circle-line"></i> {price}
-                      /Per Person
-                    </span>
+                   <span>
+  ₹ {price} /Per Person
+</span>
+
                     <span>
                       <i className="ri-map-pin-line"></i>
                       {distance} Km

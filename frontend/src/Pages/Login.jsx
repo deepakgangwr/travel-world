@@ -109,9 +109,9 @@ const Login = () => {
                       ></i>
                     </div>
                   </FormGroup>
-                  <p>
+                  {/* <p>
                     <Link to="/forgotpassword">Forgot Password?</Link>
-                  </p>
+                  </p> */}
                   <Button
                     className="btn secondary__btn auth__btn"
                     type="submit"
