@@ -92,10 +92,30 @@ const Header = () => {
               <div className="nav__btns d-flex align-items-center gap-4">
                 {user ? (
                   <>
-                    <h5 className="mb-0 p-2 logged__in_h5">
-                      {user.username.charAt(0).toUpperCase() +
-                        user.username.slice(1)}
-                    </h5>
+                    <NavLink
+                      to="/profile"
+                      className={(navClass) =>
+                        navClass.isActive ? "active__link" : ""
+                      }
+                      style={{ padding: 0 }}
+                    >
+                      <span style={{
+                        display: 'inline-block',
+                        width: 40,
+                        height: 40,
+                        borderRadius: '50%',
+                        overflow: 'hidden',
+                        border: '2px solid var(--secondary-color)',
+                        background: '#fff',
+                        cursor: 'pointer',
+                      }}>
+                        <img
+                          src={require('../../assets/images/avatar.jpg')}
+                          alt="User"
+                          style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                        />
+                      </span>
+                    </NavLink>
                     <Button className="btn primary__btn" onClick={logout}>
                       Logout
                     </Button>

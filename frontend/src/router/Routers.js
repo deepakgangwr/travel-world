@@ -15,6 +15,7 @@ import PageNotFound from '../Pages/PageNotFound';
 import Blogs from '../Pages/Blogs';
 import BlogDetails from '../Pages/BlogDetails';
 import ScrollToTop from '../utils/scrolltoTop';
+import Profile from '../Pages/Profile';
 
 const Router = () => {
   return (
@@ -34,6 +35,7 @@ const Router = () => {
       <Route path="/contact" element={<Contact />} />
       <Route path="/blogs" element={<Blogs />} />
       <Route path="/blogs/:id" element={<BlogDetails />} />
+      <Route path="/profile" element={<Profile />} />
       <Route path="*" element={<PageNotFound />} />
     </Routes></>
   );

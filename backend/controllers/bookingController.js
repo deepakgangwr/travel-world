@@ -60,8 +60,39 @@ export const getAllBookings = async (req, res) => {
   }
 };
 
+// Get all bookings for the current user by userEmail or userId
+export const getUserBookings = async (req, res) => {
+  try {
+    const userEmail = req.query.userEmail || req.body.userEmail;
+    const userId = req.query.username || req.body.username;
+
+    if (!userEmail && !userId) {
+      return res.status(400).json({ success: false, message: "userEmail or userId is required" });
+    }
+
+    const query = {
+      $or: [
+        userEmail ? { userEmail } : null,
+        userId ? { userId } : null,
+      ].filter(Boolean), // removes null entries
+    };
+
+    const bookings = await Booking.find(query);
+
+    res.status(200).json({
+      success: true,
+      message: "User bookings retrieved successfully",
+      data: bookings,
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ success: false, message: "Failed to get user bookings" });
+  }
+};
+
 export default {
   createBooking,
   getBooking,
   getAllBookings,
+  getUserBookings,
 };
