@@ -1,6 +1,8 @@
 import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
+import path from "path";
+import { fileURLToPath } from "url";
 import mongoose from "mongoose";
 import cookieParser from "cookie-parser";
 import authRoute from "./router/auth.js";
@@ -12,8 +14,11 @@ import searchRoute from "./router/Search.js";
 import contactRoute from "./router/contacts.js";
 import blogRoute from "./router/blogs.js";
 import commentRoute from "./router/comments.js";
+import paymentsRoute from "./router/payments.js";
 
-dotenv.config();
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+dotenv.config({ path: path.join(__dirname, ".env") });
 const app = express();
 const port = process.env.PORT || 8000;
 const corsOptions = {
@@ -53,6 +58,7 @@ app.use("/api/v1/search", searchRoute);
 app.use("/api/v1/contact", contactRoute);
 app.use("/api/v1/blogs", blogRoute);
 app.use("/api/v1/comment", commentRoute);
+app.use("/api/v1/payments", paymentsRoute);
 
 app.listen(port, () => {
     connect();

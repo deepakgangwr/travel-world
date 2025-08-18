@@ -4,6 +4,7 @@ import { Form, FormGroup, ListGroup, Button, ListGroupItem, Alert } from "reacts
 import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../../context/AuthContext";
 import { BASE_URL } from "../../utils/config";
+// Razorpay checkout script will be loaded dynamically
 
 const Booking = ({ tour, avgRating, totalRating, reviews }) => {
   const { price, title } = tour;
@@ -19,6 +20,7 @@ const Booking = ({ tour, avgRating, totalRating, reviews }) => {
     phone: "",
     bookAt: "",
     groupSize: "",
+    image:null,
   });
 
   const [isBookingSuccessful, setIsBookingSuccessful] = useState(false);
@@ -29,6 +31,21 @@ const Booking = ({ tour, avgRating, totalRating, reviews }) => {
     setBooking((prev) => ({ ...prev, [e.target.id]: e.target.value }));
   };
 
+  const loadRazorpayScript = () => {
+    return new Promise((resolve) => {
+      if (document.getElementById("razorpay-checkout-js")) {
+        resolve(true);
+        return;
+      }
+      const script = document.createElement("script");
+      script.id = "razorpay-checkout-js";
+      script.src = "https://checkout.razorpay.com/v1/checkout.js";
+      script.onload = () => resolve(true);
+      script.onerror = () => resolve(false);
+      document.body.appendChild(script);
+    });
+  };
+
   const handleClick = async (e) => {
     e.preventDefault();
     try {
@@ -37,32 +54,108 @@ const Booking = ({ tour, avgRating, totalRating, reviews }) => {
         return;
       }
 
-      const response = await fetch(`${BASE_URL}/booking`, {
+      const groupSizeNumber = Number(booking.groupSize || 1);
+      const taxes = 0.05 * Number(price) * groupSizeNumber;
+      const totalAmount = Number(price) * groupSizeNumber + taxes;
+      const amountPaise = Math.round(totalAmount * 100);
+
+      const orderRes = await fetch(`${BASE_URL}/payments/orders`, {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
+        headers: { "Content-Type": "application/json" },
         credentials: "include",
-        body: JSON.stringify(booking),
+        body: JSON.stringify({
+          amount: amountPaise,
+          currency: "INR",
+          notes: { tourName: title, userEmail: user?.email }
+        })
       });
 
-      if (response.ok) {
-        setIsBookingSuccessful(true);
-        setIsBookingFailed(false);
-        setBooking({
-          ...booking,
-          fullName: "",
-          phone: "",
-          bookAt: "",
-          groupSize: "",
-        });
-        setTimeout(() => {
-          navigate("/thank-you");
-        }, 1000); // 1-second delay before navigating to the "thank you" page
-      } else {
+      if (!orderRes.ok) {
         setIsBookingSuccessful(false);
         setIsBookingFailed(true);
+        return;
       }
+      const { order } = await orderRes.json();
+
+      const loaded = await loadRazorpayScript();
+      if (!loaded) {
+        setIsBookingSuccessful(false);
+        setIsBookingFailed(true);
+        return;
+      }
+
+      // get public key from backend
+      const keyRes = await fetch(`${BASE_URL}/payments/key`, { credentials: "include" });
+      const keyJson = keyRes.ok ? await keyRes.json() : { key: undefined };
+      const options = {
+        key: keyJson?.key,
+        amount: order.amount,
+        currency: order.currency,
+        name: "Tour Booking",
+        description: title,
+        order_id: order.id,
+        prefill: {
+          name: booking.fullName,
+          email: user?.email,
+          contact: booking.phone,
+        },
+        notes: {
+          tourName: title,
+          userEmail: user?.email,
+        },
+        handler: async function (response) {
+          try {
+            const verifyRes = await fetch(`${BASE_URL}/payments/verify`, {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              credentials: "include",
+              body: JSON.stringify({
+                razorpay_order_id: response.razorpay_order_id,
+                razorpay_payment_id: response.razorpay_payment_id,
+                razorpay_signature: response.razorpay_signature,
+                booking: {
+                  ...booking,
+                  userId: user && user.username,
+                  userEmail: user && user.email,
+                  tourName: title,
+                  amount: amountPaise,
+                  currency: "INR",
+                }
+              })
+            });
+
+            if (verifyRes.ok) {
+              setIsBookingSuccessful(true);
+              setIsBookingFailed(false);
+              setBooking({
+                ...booking,
+                fullName: "",
+                phone: "",
+                bookAt: "",
+                groupSize: "",
+                image: "",
+              });
+              setTimeout(() => {
+                navigate("/thank-you");
+              }, 800);
+            } else {
+              setIsBookingSuccessful(false);
+              setIsBookingFailed(true);
+            }
+          } catch (err) {
+            setIsBookingSuccessful(false);
+            setIsBookingFailed(true);
+          }
+        },
+        theme: { color: "#3399cc" },
+      };
+
+      const razorpay = new window.Razorpay(options);
+      razorpay.on("payment.failed", function () {
+        setIsBookingSuccessful(false);
+        setIsBookingFailed(true);
+      });
+      razorpay.open();
     } catch (error) {
       setIsBookingSuccessful(false);
       setIsBookingFailed(true);
@@ -112,7 +205,7 @@ const Booking = ({ tour, avgRating, totalRating, reviews }) => {
 
       <div className="booking__form">
         <h5>Information</h5>
-        <Form className="booking__info-form" onSubmit={handleClick}>
+        <Form className="booking__info-form">
           <FormGroup>
             <input
               type="text"
@@ -174,7 +267,7 @@ const Booking = ({ tour, avgRating, totalRating, reviews }) => {
             <span>  ₹{total}</span>
           </ListGroupItem>
         </ListGroup>
-        <Button className="btn primary__btn w-100 mt-4" onClick={handleClick}>
+        <Button type="button" className="btn primary__btn w-100 mt-4" onClick={handleClick}>
           Book Now
         </Button>
       </div>

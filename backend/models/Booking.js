@@ -28,6 +28,30 @@ const bookingSchema = new mongoose.Schema(
       type: Date,
       required: true,
     },
+    image:{
+      type:String,
+    },
+    // Payment fields
+    amount: {
+      type: Number, // amount in paise
+    },
+    currency: {
+      type: String,
+      default: "INR",
+    },
+    status: {
+      type: String, // created | paid | failed | refunded
+      default: "created",
+    },
+    razorpayOrderId: {
+      type: String,
+    },
+    razorpayPaymentId: {
+      type: String,
+    },
+    razorpaySignature: {
+      type: String,
+    }
     
   },
   { timestamps: true }

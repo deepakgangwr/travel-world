@@ -34,9 +34,7 @@ const Home = () => {
                   <span className="highlight">Memories</span>
                 </h1>
                 <p>
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                  Phasellus tempus massa vitae elit consectetur, ut convallis massa ultricies.
-                  Duis hendrerit turpis quis tincidunt lobortis. Nullam vel faucibus mauris.
+                  Discover the world your way – book adventures, explore hidden gems, and create unforgettable memories with Travel World, your trusted partner in journeys beyond borders, where every trip begins with inspiration.
                 </p>
               </div>
             </Col>

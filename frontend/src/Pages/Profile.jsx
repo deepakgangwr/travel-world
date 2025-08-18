@@ -60,6 +60,7 @@ const Profile = () => {
                           <CardBody>
                             <CardTitle tag="h5" className="mb-2" style={{ color: 'var(--secondary-color)', fontWeight: 600 }}>{booking.tourName}</CardTitle>
                             <CardText>
+                              <span style={{ display: 'block', marginBottom: 6 }}><b>image:</b> {booking.image}</span>
                               <span style={{ display: 'block', marginBottom: 6 }}><b>Full Name:</b> {booking.fullName}</span>
                               <span style={{ display: 'block', marginBottom: 6 }}><b>Group Size:</b> {booking.groupSize}</span>
                               <span style={{ display: 'block', marginBottom: 6 }}><b>Phone:</b> {booking.phone}</span>
